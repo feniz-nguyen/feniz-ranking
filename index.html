@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Ranking</title>
+    <script>
+        const ws = new WebSocket('ws://localhost:8080/ws');
+
+        ws.onopen = () => {
+            console.log('Connected to the WebSocket');
+            // Gửi yêu cầu bảng xếp hạng khi kết nối
+            ws.send('fetch_ranking');
+        };
+
+        ws.onmessage = (event) => {
+            const leaderboard = JSON.parse(event.data);
+            let rankingList = '<h2>Realtime Ranking</h2>';
+            rankingList += '<ul>';
+            leaderboard.forEach(player => {
+                rankingList += `<li>${player.Name} - ${player.Score} points</li>`;
+            });
+            rankingList += '</ul>';
+            document.getElementById('ranking').innerHTML = rankingList;
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket Error: ', error);
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</head>
+<body>
+    <div id="ranking">Loading ranking...</div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Video API",
+      "description": "API for video ranking and interaction",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/videos/ranking/global": {
+        "get": {
+          "summary": "Get global video ranking",
+          "description": "This endpoint provides global video ranking data.",
+          "operationId": "getGlobalVideoRanking",
+          "responses": {
+            "101": {
+              "description": "HTTP connection established"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          },
+          "schemes": [
+            "http"
+          ],
+          "host": "localhost:8000"
+        }
+      },
+      "/api/videos/ranking/user": {
+        "get": {
+          "summary": "Get Video Ranking for a User",
+          "description": "Lấy ranking của video cho user",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "query",
+              "description": "User ID",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "/api/video/interaction": {
+        "post": {
+          "summary": "Interact with a video",
+          "description": "This endpoint allows users to interact with a video, e.g., like or dislike.",
+          "operationId": "videoInteraction",
+          "parameters": [
+            {
+              "name": "videoInteraction",
+              "in": "body",
+              "description": "The interaction details for the video.",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "video_name": {
+                    "type": "string",
+                    "example": "TOP video"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "video-likes"
+                  }
+                },
+                "required": ["video_name", "type"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully interacted with the video",
+              "schema": {
+                "type": "string",
+                "example": "OK"
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          },
+          "host": "localhost:8000"
+        }
+      }
+    }
+  }
+  
